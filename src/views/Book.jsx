@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Table, Tag } from 'antd'
+import React, { useState } from 'react'
+import { Button, Table, message } from 'antd'
 import { base_url, getBookByID } from '../api/endpoints'
 import BookInfoModal from './BookInfoModal'
 
 export default function Book() {
-  // useEffect(() => {
-  //   getData()
-  // })
-
   const [data, setData] = useState()
   const [visible, setVisible] = useState(false)
   const [model, setModel] = useState('')
@@ -170,13 +166,15 @@ export default function Book() {
   const deleteHandler = (record) => () => {
     setModel('DELETE')
     setRecord(record)
-    handleSubmit(record)
+    fetchFuc('http://localhost:3000/api/deleteBookByID', 'DELETE', {
+      bookID: record.bookID,
+    })
   }
 
   const headHandler = () => {
     fetch('http://localhost:3000/api/getBookByID', { method: 'HEAD' }).then(
       (res) => {
-        console.log('++++++headers', res.headers.get('name'))
+        message.info(`name got from response headers: ${res.headers.get('name')}`)
       }
     )
   }
