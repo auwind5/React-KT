@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Modal, Button } from 'antd'
+import { useForm } from 'antd/lib/form/Form'
 
 export default function BookInfoModal(props) {
-  const { isModalVisible, model, handleSubmit, handleCancel } = props
+  const { isModalVisible, model, handleSubmit, handleCancel, rowData } = props
+  const [ form ] = useForm()
+
+  useEffect(() => {
+    if (model !== 'POST') {
+      form.setFieldsValue(rowData)
+    } else {
+      form.resetFields()
+    }
+  }, [model, form, rowData])
 
   const onFinishFailed = () => {
     console.log('failed!')
@@ -11,14 +21,16 @@ export default function BookInfoModal(props) {
     <Modal
       title={model === 'add' ? 'Add Book' : 'Edit Book'}
       footer={null}
+      forceRender
       visible={isModalVisible}
       onCancel={handleCancel}
     >
       <Form
         name="basic"
+        form={form}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
-        initialValues={{ bookName: 123 }}
+        initialValues={{ }}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
         autoComplete="off"

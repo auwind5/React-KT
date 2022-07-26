@@ -128,6 +128,14 @@ export default function Book() {
     setVisible((prev) => !prev)
   }
 
+  const headHandler = () => {
+    fetch('http://localhost:3000/api/getBookByID', { method: 'HEAD' }).then(
+      (res) => {
+        message.info(`name got from response headers: ${res.headers.get('name')}`)
+      }
+    )
+  }
+
   const getData = () => {
     fetch('http://localhost:3000/api/getBookByID', { method: 'GET' })
       .then((res) => res.json())
@@ -171,14 +179,6 @@ export default function Book() {
     })
   }
 
-  const headHandler = () => {
-    fetch('http://localhost:3000/api/getBookByID', { method: 'HEAD' }).then(
-      (res) => {
-        message.info(`name got from response headers: ${res.headers.get('name')}`)
-      }
-    )
-  }
-
   return (
     <>
       <div className="book-table">
@@ -205,6 +205,7 @@ export default function Book() {
       </div>
       <BookInfoModal
         model={model}
+        rowData={record}
         isModalVisible={visible}
         handleCancel={handleCancel}
         handleSubmit={handleSubmit}
